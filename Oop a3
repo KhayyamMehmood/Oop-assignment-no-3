@@ -1,0 +1,168 @@
+question no 1 
+#include<iostream>
+#include<string>
+using namespace std;
+ 
+
+class Shape
+{
+public:
+   virtual double area() const = 0; 
+   virtual void display() const = 0;
+   virtual ~Shape() = default;
+};
+ 
+
+class Rectangle : public Shape
+{
+private:
+   double length;
+   double width;
+ 
+public:
+   Rectangle(double l, double w) : length(l), width(w) {}
+ 
+   double area() const override
+   {
+       return length * width;
+   }
+ 
+   void display() const override
+   {
+       cout << "Rectangle: Length = " << length << ", Width = " << width <<endl;
+   }
+};
+ 
+
+class Circle : public Shape
+{
+private:
+   double radius;
+ 
+public:
+   Circle(double r) : radius(r) {}
+ 
+   double area() const override
+   {
+       return 3.14159 * radius * radius;
+   }
+ 
+   void display() const override
+   {
+       cout << "Circle: Radius = " << radius << endl;
+   }
+};
+ 
+int main() {
+   Shape* shapes[] = { new Rectangle(5, 4), new Circle(3) };
+ 
+   for (Shape* shape : shapes)
+   {
+       shape->display();
+       cout << "Area: " << shape->area() <<endl;
+   }
+ 
+   for (Shape* shape : shapes)
+   {
+       delete shape;
+   }
+ 
+   return 0;
+}
+
+
+question no 2 
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+class Product {
+public:
+    int productId;
+    string productName;
+    double price;
+
+    Product(int id, const string& name, double p)
+        : productId(id), productName(name), price(p) {}
+
+    void displayProductDetails() const {
+        cout << "Product ID: " << productId << ", Name: " << productName << ", Price: $" << price <<endl;
+    }
+};
+
+class ShoppingCart {
+private:
+    vector<Product*> products; 
+
+public:
+    void addProduct(Product* product) {
+        products.push_back(product);
+    }
+
+    void displayAllProducts() const {
+        cout << "Products in the shopping cart:" <<endl;
+        for (const auto& product : products) {
+            product->displayProductDetails();
+        }
+    }
+
+    double calculateTotalCost() const {
+        double totalCost = 0.0;
+        for (const auto& product : products) {
+            totalCost += product->price;
+        }
+        return totalCost;
+    }
+};
+
+class User {
+public:
+    int userId;
+    ShoppingCart* shoppingCart;
+
+    User(int id) : userId(id), shoppingCart(nullptr) {}
+
+    void displayUserDetails() const {
+        cout << "User ID: " << userId << endl;
+        if (shoppingCart) {
+            std::cout << "User has a shopping cart." << std::endl;
+        } else {
+            cout << "User does not have a shopping cart." <<endl;
+        }
+    }
+};
+
+int main() {
+    
+    Product* laptop = new Product(1, "Laptop", 1200.0);
+    Product* phone = new Product(2, "Smartphone", 800.0);
+
+
+    ShoppingCart* cart = new ShoppingCart();
+    cart->addProduct(laptop);
+    cart->addProduct(phone);
+
+    
+    User* user = new User(101);
+    user->shoppingCart = cart;
+
+  
+    user->displayUserDetails();
+
+    
+    user->shoppingCart->displayAllProducts();
+
+    
+    double totalCost = user->shoppingCart->calculateTotalCost();
+    cout << "Total Cost: $" << totalCost <<endl;
+
+
+    delete laptop;
+    delete phone;
+    delete cart;
+    delete user;
+
+    return 0;
+}
+
+
